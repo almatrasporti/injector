@@ -16,7 +16,8 @@ Es:
 
 
 ### Configurazione
-E' possibile configurare l'Injector mediante un file di properties, contenente i seguenti campi:
+E' possibile configurare l'Injector mediante un file di properties, passato contestualmente al lancio del servizio, 
+mediante l'opzione java `-Dproperties.file="Injector.properties"`, contenente i seguenti campi:
 
 - **InputAdapter**: Classe usata per leggere i dati da una sorgente __(vedi IInputChannelAdapter)__
 store- **OutputAdapter**: Classe usata per scrivere i dati sulla destinazione  __(vedi IOutputChannelAdapter)__
@@ -24,9 +25,11 @@ store- **OutputAdapter**: Classe usata per scrivere i dati sulla destinazione  _
 - **CSVFile**: Posizione del file csv con il dataset di test, usato nel caso in cui `InputAdapter` `CSVInputChannelAdapter`
 
 ## Funzionamento
-La classe `Injector` viene istanziata passando due istanze delle interfacce `IInputChannelAdapter` e `IOnputChannelAdapter`.
+La classe `Injector` viene istanziata passando rispettivamente una istanza delle interfacce `IInputChannelAdapter` e 
+`IOnputChannelAdapter`.
 
-Tramite il metodo `process`, uno o più eventi (di tipo CANBusMessage) vengono letti dall'inputChannel, per essere scritti sull'outputChannel immediatamente dopo. 
+Tramite il metodo `process`, uno o più eventi (di tipo `CANBusMessage`) vengono letti dall'inputChannel, per essere 
+scritti sull'outputChannel immediatamente dopo. 
 
 ```
     private void process() throws IOException {
@@ -44,6 +47,8 @@ public interface IInputChannelAdapter {
     public Collection<CANBusMessage> load() throws IOException;
 }
 ```
+Notare che il metodo prevede come valore di uscita una `Collection`, in quanto nel caso reale, i messaggi acquisiti ad 
+ogni chiamata potrebbero essere uno o più.
 
 Due diverse implementazioni sono state realizzate:
 - `DummyInputChannelAdapter`: fornisce dati generati in modo casuale, per scopi di test;
